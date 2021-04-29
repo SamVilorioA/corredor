@@ -25,22 +25,22 @@ public class PanelDeJuego extends JPanel {
   int anchuraNube2 = 400;
   Obstaculo[] obstaculos;
   Juego juego;
+  VentanaJuego ventanaJuego;
   Bosque bosque;
-  Jugador jugador;
   Sol[] estrellas;
   Nube nube;
   JButton botonReiniciar = new JButton("Iniciar");
 
-  public PanelDeJuego(Juego juego) {
+  public PanelDeJuego(VentanaJuego ventanaJuego, Juego juego) {
     this.juego = juego;
+    this.ventanaJuego = ventanaJuego;
     this.bosque = new Bosque(0, new Color(120, 80, 80), this);
-    this.jugador = new Jugador(this);
     this.setLayout(null);
     botonReiniciar.setSize(200, 50);
     botonReiniciar.addActionListener(new ActionListener() {
       @Override
       public void actionPerformed(ActionEvent e) {
-        juego.iniciarODetener("Iniciar");
+        ventanaJuego.iniciarODetener("Iniciar");
         botonReiniciar.setVisible(false);
       }
     });
@@ -70,19 +70,23 @@ public class PanelDeJuego extends JPanel {
   }
 
   public boolean esDeNoche() {
-    return juego.esDeNoche();
+    return juego != null ? juego.esDeNoche() : false;
   }
 
   public boolean estaNevando() {
-    return juego.estaNevando();
+    return juego != null ? juego.estaNevando() : false;
   }
 
   public boolean estaLloviendo() {
-    return juego.estaLloviendo();
+    return juego != null ? juego.estaLloviendo() : false;
   }
 
   public void cargarImagen() {
-    jugador.cargarImagen();
+    if(juego != null) {
+      juego.jugador.cargarImagen();
+    }
+    
+    System.out.println("juego: " + juego);
   }
 
   @Override
@@ -134,26 +138,28 @@ public class PanelDeJuego extends JPanel {
       }
     }
 
-    jugador.dibujar(g);
+    if( juego != null ) {
+      juego.jugador.dibujar(g);
 
-    boolean seAcaboElJuego = false;
-    for (Obstaculo obstaculo : obstaculos) {
-      Rectangle rectanguloHombre = new Rectangle(jugador.limites);
+      boolean seAcaboElJuego = false;
+      for (Obstaculo obstaculo : obstaculos) {
+        Rectangle rectanguloHombre = new Rectangle(juego.jugador.limites);
 
-      if (rectanguloHombre.intersects(obstaculo.limites)) {
-        seAcaboElJuego = true;
-        break;
+        if (rectanguloHombre.intersects(obstaculo.limites)) {
+          seAcaboElJuego = true;
+          break;
+        }
       }
-    }
+    
+      if (seAcaboElJuego) {
+        g.setFont(new Font("Arial", Font.BOLD, 40));
+        g.setColor(Color.red);
+        g.drawString("Game Over!", getWidth() / 2, getHeight() / 2);
 
-    if (seAcaboElJuego) {
-      g.setFont(new Font("Arial", Font.BOLD, 40));
-      g.setColor(Color.red);
-      g.drawString("Game Over!", getWidth() / 2, getHeight() / 2);
-
-      botonReiniciar.setLocation(getWidth() / 2, getHeight() / 2);
-      botonReiniciar.setVisible(true);
-      juego.terminar();
+        botonReiniciar.setLocation(getWidth() / 2, getHeight() / 2);
+        botonReiniciar.setVisible(true);
+        juego.terminar();
+      }
     }
 
     if (estaLloviendo() || estaNevando()) {
