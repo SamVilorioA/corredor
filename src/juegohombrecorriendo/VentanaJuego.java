@@ -88,6 +88,7 @@ public class VentanaJuego extends javax.swing.JFrame {
   // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
   private void initComponents() {
 
+    grupoBotonesClima = new javax.swing.ButtonGroup();
     jPanel1 = new javax.swing.JPanel();
     btnCambiarPersonaje = new javax.swing.JButton();
     btnIniciar = new javax.swing.JButton();
@@ -96,6 +97,7 @@ public class VentanaJuego extends javax.swing.JFrame {
     sliderVelocidad = new javax.swing.JSlider();
     cbLlover = new javax.swing.JCheckBox();
     cbNevar = new javax.swing.JCheckBox();
+    jCheckBox1 = new javax.swing.JCheckBox();
     cbAnochecer = new javax.swing.JCheckBox();
 
     setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
@@ -138,6 +140,7 @@ public class VentanaJuego extends javax.swing.JFrame {
     });
     jPanel1.add(sliderVelocidad);
 
+    grupoBotonesClima.add(cbLlover);
     cbLlover.setText("Llover");
     cbLlover.addChangeListener(new javax.swing.event.ChangeListener() {
       public void stateChanged(javax.swing.event.ChangeEvent evt) {
@@ -146,6 +149,7 @@ public class VentanaJuego extends javax.swing.JFrame {
     });
     jPanel1.add(cbLlover);
 
+    grupoBotonesClima.add(cbNevar);
     cbNevar.setText("Nevar");
     cbNevar.addChangeListener(new javax.swing.event.ChangeListener() {
       public void stateChanged(javax.swing.event.ChangeEvent evt) {
@@ -153,6 +157,10 @@ public class VentanaJuego extends javax.swing.JFrame {
       }
     });
     jPanel1.add(cbNevar);
+
+    grupoBotonesClima.add(jCheckBox1);
+    jCheckBox1.setText("Normal");
+    jPanel1.add(jCheckBox1);
 
     cbAnochecer.setText("Anochecer");
     jPanel1.add(cbAnochecer);
@@ -301,6 +309,8 @@ public class VentanaJuego extends javax.swing.JFrame {
   private javax.swing.JCheckBox cbAnochecer;
   private javax.swing.JCheckBox cbLlover;
   private javax.swing.JCheckBox cbNevar;
+  private javax.swing.ButtonGroup grupoBotonesClima;
+  private javax.swing.JCheckBox jCheckBox1;
   private javax.swing.JLabel jLabel1;
   private javax.swing.JPanel jPanel1;
   private javax.swing.JLabel lblVelocidadActual;
