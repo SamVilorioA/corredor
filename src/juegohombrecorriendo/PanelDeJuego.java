@@ -22,8 +22,12 @@ public class PanelDeJuego extends JPanel {
   int anchuraNube = 300;
   int posicionNube2X = 0;
   int posicionNube2Y = 60;
-  int anchuraNube2 = 400;
+  int anchuraNube2 = 400; 
   Obstaculo[] obstaculos;
+  // codigo kingcode arreglo de estrellas de bonos y atributos de la estrellita
+  int pEstX = 1500, pEstY = 560, ancEst = 60;
+  Estrella estrellitas;
+  
   Juego juego;
   VentanaJuego ventanaJuego;
   Bosque bosque;
@@ -48,8 +52,8 @@ public class PanelDeJuego extends JPanel {
     this.add(botonReiniciar);
 
     Image imagen = new javax.swing.ImageIcon(getClass().getResource("/imagenes/sol3.png")).getImage();
-    
     estrellas = new Sol[50];
+    
     Random numerosAleatorios = new Random();
     for(int i = 0; i < estrellas.length; i++) {
       int diametroSol = numerosAleatorios.nextInt( 41 )  + 10;
@@ -66,6 +70,12 @@ public class PanelDeJuego extends JPanel {
     int yNube = 10;
 
     this.nube = new Nube(new Rectangle(xNube, yNube, diametroNube, diametroNube), imagen2, this);
+    
+    //codigo kingcode carga de imagen
+    //int diamEst = 60, xEst = this.getWidth() - diamEst, yEst = 560;
+    Image imagenEst = new javax.swing.ImageIcon(getClass().getResource("/imagenes/estrella.png")).getImage();
+    this.estrellitas = new Estrella(new Rectangle(this.pEstX , this.pEstY, this.ancEst, this.ancEst), imagenEst, this);
+            
 
   }
 
@@ -95,10 +105,16 @@ public class PanelDeJuego extends JPanel {
 
     Color color = esDeNoche() ? new Color(60, 60, 60) : new Color(60, 170, 230);
     this.setBackground((estaLloviendo() || estaNevando()) ? color.darker() : color);
-
+    
+     
     String imagenAMostrar = esDeNoche() ? "luna" : "sol3";
     Image imagen = new javax.swing.ImageIcon(getClass().getResource("/imagenes/" + imagenAMostrar + ".png")).getImage();
-    
+    //imagen = new javax.swing.ImageIcon(getClass().getResource("/imagenes/nube.png")).getImage();
+            //g.drawImage(imagenEst, pEstX--, pEstY, ancEst, ancEst / 2, this);
+    // codigo kingCode establecer comportamiento de la estrellita
+    estrellitas.establecerDireccion("izquierda");
+    estrellitas.actualizar();
+    estrellitas.dibujar(g);
     nube.establecerDireccion("derecha");
     nube.actualizar();
     nube.dibujar(g);
@@ -120,6 +136,8 @@ public class PanelDeJuego extends JPanel {
             if (nube.limites.x < -nube.limites.width) {
               nube.limites.x = this.getWidth() - nube.limites.width;
             }
+            if(estrellitas.limites.x < -estrellitas.limites.width)
+                estrellitas.limites.x = this.getWidth() - estrellitas.limites.width;
           }
           estrella.dibujar(g);
         }
@@ -128,11 +146,15 @@ public class PanelDeJuego extends JPanel {
 
     if (bosque != null) {
       bosque.dibujar(g);
-
+      // codigo kingcode
+      /*if( estrellitas == null){
+          //
+      }*/
+      
       if (obstaculos == null) {
         obstaculos = new Obstaculo[]{ new Obstaculo(this, bosque.getCarretera()) };
       }
-
+      
       for (Obstaculo obstaculo : obstaculos) {
         obstaculo.dibujar(g);
       }
@@ -198,6 +220,11 @@ public class PanelDeJuego extends JPanel {
         posicionNube2X = this.getWidth();
       }
     }
+    // codigo kingCode
+    imagen = new javax.swing.ImageIcon(getClass().getResource("/imagenes/estrella.png")).getImage();
+    g.drawImage(imagen, pEstX-=20, pEstY,ancEst,ancEst,  this);
+    if(pEstX + ancEst < 0)
+        pEstX = this.getWidth();
 
     this.requestFocusInWindow();
   }
